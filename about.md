@@ -3,6 +3,8 @@ title: About
 permalink: /about/
 ---
 
-<p class="heavy-title"><a href="http://github.com/thinker3197/Ink">Ink</a> is a simple & minimalistic theme for <a href="http://jekyllrb.com">Jekyll</a>, a static site generator.</p>
+<p class="heavy-title"><a href="https://kimeunyeol.github.io">KEY</a> Current senior in the Kumoh National Institute of Technology and  Mainly dealing with JAVA & Javascript & BlockChain </p>
+
+<p>Now Internship In ITSCO.co </p>
 
 >Designed and developed by [@thinker3197](https://github.com/thinker3197).
