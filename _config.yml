@@ -1,18 +1,18 @@
-name:               "Ink"
-description:        "A minimalistic jekyll theme for humans"
+name:               "KeY"
+description:        "Key.log"
 
 url:                ""
-author:             "thinker3197"
-email:              "jhondoe@abc.com"
+author:             "KimEunYeol"
+email:              "kimeunyeol23@gmail.com"
 gravatar_hash:      "205e460b479e2e5b48aec07710c08d50"
-twitter:            "jhondoe"
-email:              "jhondoe@abc.com"
-github:             "jhondoe"
-pinterest:          "jhondoe"
-linkedin:           "jhondoe"
-facebook:           "jhondoe"
+twitter:            ""
+email:              "kimeunyeol23@gmail.com"
+github:             "KimEunYeol"
+pinterest:          ""
+linkedin:           "KimEunYeol"
+facebook:           ""
 
-disqus_shortname:   "thinker3197"
+disqus_shortname:   "KEY"
 
 background:         "http://apple.wallpapersfine.com/wallpapers/original/1242x2208/w-5273.jpg"
 
@@ -27,7 +27,7 @@ markdown:           kramdown
 nav:
   - name:           "About"
     href:           "/about"
-  - name:           "Download"
+  - name:           "Post"
     href:           "/releases"
 
 sass:
