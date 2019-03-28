@@ -1,6 +1,6 @@
 ---
-title:        "CleanCode - 1. A meaningful naming"
-description:  "소프트웨어에서 이름은 어디에나 쓰인다, 이렇듯 이름을 잘 지으면 여러모로 편하다. 이번 포스팅에서는 이름을 잘 짓는 간단한 규칙을 몇 가지 소개하고자 한다"
+title:        "CleanCode - 2. Function"
+description:  ""
 image:        "http://placehold.it/400x200"
 author:       "KimEunYeol"
 ---
@@ -169,6 +169,4 @@ public class GuessStratisticsMessage{
 
 
 
-
-
-       본 포스팅은 Clean Code: A Handbook of Agile Software Craftsmanship (Robert C. Martin Series)에 기반한 내용이며 수록된 코드 및 참고문헌을 인용하였습니다.
+본 포스팅은 Clean Code: A Handbook of Agile Software Craftsmanship (Robert C. Martin Series)에 기반한 내용이며 수록된 코드 및 참고문헌을 인용하였습니다.
