@@ -1,7 +1,7 @@
 ---
 title:        "CleanCode - A meaningful naming(1)-수정중"
 description:  "소프트웨어에서 이름은 어디에나 쓰인다, 이렇듯 이름을 잘 지으면 여러모로 편하다. 이번 포스팅에서는 이름을 잘 짓는 간단한 규칙을 몇 가지 소개하고자 한다"
-image:        ""
+image:        "http://placehold.it/400x200"
 author:       "KimEunYeol"
 ---
 
