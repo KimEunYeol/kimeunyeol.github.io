@@ -60,6 +60,7 @@ public List<Cell> getFlaggedCells(){
 ~~~
 단순히 이름만 바꿨을 뿐인데 가독성이 훨씬 좋아졌다:)
 
+<<<<<<< HEAD
 그릇된 정보를 피하고 의미있게 구분하자
 -------------------
 유사한 의미의 단어 혹은 동음 다의어나 간단한 약어들을 구분하기 위해서는 나만의 기준이 생길수 밖에 없다 이러한 나만의 기준은 코드의 복잡성을 증대시킬 뿐이다
@@ -129,7 +130,7 @@ public class GuessStratisticsMessage{
 	private String number;
     private String verb;
     private String pluraModifier;
-    
+
     public String makee(char candidate, int count){
     	createPluraDependentMessageParts(count);
         return String.format(
@@ -164,11 +165,5 @@ public class GuessStratisticsMessage{
 ~~~
 
 
-
-
-
-
-
-
-
        본 포스팅은 Clean Code: A Handbook of Agile Software Craftsmanship (Robert C. Martin Series)에 기반한 내용이며 수록된 코드 및 참고문헌을 인용하였습니다.
+
