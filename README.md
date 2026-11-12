@@ -1,11 +1,43 @@
-# Intro
+# 공개용 기술경력 포트폴리오
 
-Nice to meet you, welcome to my blog
-If you are curious about everything I've seen, listened and learned,
+공공·제조 데이터 파이프라인과 AI 운영 백엔드의 업무 경험을 정리한 포트폴리오다. 고객사와 프로젝트는 업무 유형으로 표기한다. 프로젝트 표에서 업무·개인을 구분하고 이름과 기술로 검색할 수 있다.
 
-go to [Check this out](https://kimeunyeol.github.io)
+## 공개 내용
 
+- 기술경력 8건, 전문 업무 프로젝트 4개, 업무 기록 7편.
+- 별도 개인 제작 항목은 일반명칭인 '음악동아리'로만 소개.
+- 참여 기간, 담당 역할, 실제 사용 기술과 확인한 결과.
+- 현재 사내 개발은 과거의 증빙 확인 경력과 별도 항목으로 표시.
+- 이름·직무, 관련 전공 수준과 직무 자격.
 
-## <a name="license"></a>End
+고객사·회사·솔루션의 고유명, 개인 연락처와 계정 링크, 학교명·졸업 시기, 수상·연구 시연은 공개 대상에서 제외했다. 개인 제작은 사용자가 지정한 음악동아리 항목만 일반명칭으로 소개하며, 서비스의 실제 이름이 담긴 링크와 이미지는 포함하지 않는다. 원본 경력증명서와 비공개 작업 근거 파일도 이 저장소에 포함하지 않는다.
 
-Feedback and inquiries are welcome at any time. Please contact me by e-mail :)
+## 실행
+
+Node.js 22 이상을 사용한다. 런타임 외의 패키지 설치는 필요하지 않다.
+
+```powershell
+node scripts/build.mjs
+node --test tests/site.test.mjs
+node scripts/preview.mjs
+```
+
+미리보기는 `http://127.0.0.1:4173/`에서 열린다. 검색은 공개 색인만 사용하며 검색어를 외부로 전송하지 않는다. JavaScript 없이도 상단 메뉴와 프로젝트 링크로 탐색할 수 있다.
+
+## 편집과 생성
+
+- `content/profile.json`: 공개용 경력·프로젝트·직무 데이터.
+- `content/work.json`: 공개 가능한 수행 내용과 결과.
+- `scripts/build.mjs`: 페이지와 검색 색인 생성. 제외된 프로젝트·업무의 이전 생성 페이지도 정리한다.
+- `assets/css/site.css`: 프로젝트 탐색형 디자인, 모바일·인쇄 스타일.
+- `assets/js/site.js`: 프로젝트 선택·분류·검색, 전체 검색, 모바일 메뉴와 인쇄.
+
+내용 변경 후 빌드를 실행하고 생성된 HTML·검색 색인도 함께 갱신한다. 개인 연락처·고유 명칭이 담긴 이미지와 사용하지 않는 이전 테마 원본은 포함하지 않는다. 제외된 과거 학습 글의 일반 URL에는 본문 대신 검색 제외 안내만 제공한다.
+
+## 검증과 공개
+
+검사는 내부 링크, 목차, 검색 색인, 개인정보 관련 공개 필드와 오래된 생성 페이지의 잔존을 확인한다. 공개 범위는 `docs/public-content-policy.md`를 따른다. 이력서는 브라우저에서 인쇄하거나 PDF로 저장한다.
+
+`.nojekyll`과 생성된 루트 HTML을 사용하는 정적 사이트다. 원격 저장소와 호스팅 설정은 로컬 빌드만으로 변경되지 않는다.
+
+기존 소프트웨어의 라이선스 고지는 `LICENSE`, `THIRD_PARTY_NOTICES.md`에 보존한다.

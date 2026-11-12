@@ -1,0 +1,202 @@
+{
+  "categories": [
+    {
+      "id": "design",
+      "name": "설계·개발",
+      "description": "서비스 구성과 데이터 처리 방식을 정하며 했던 작업입니다."
+    },
+    {
+      "id": "operations",
+      "name": "운영·문제 대응",
+      "description": "운영 중 만난 오류와 당시 확인한 원인, 조치를 정리했습니다."
+    },
+    {
+      "id": "verification",
+      "name": "검증·개선",
+      "description": "적재 결과와 품질 검사에서 확인한 내용입니다."
+    }
+  ],
+  "entries": [
+    {
+      "slug": "production-contract-boundaries",
+      "title": "파이프라인 실행과 품질 판정 나누기",
+      "category": "design",
+      "project": "data-production-platform",
+      "period": "진행 중 / 2026.11 기준",
+      "status": "사내 설계·개발 진행 중",
+      "summary": "명세, 실행, 품질 검사와 증거 이력을 연결하는 사내 플랫폼을 설계했습니다.",
+      "context": "실행이 성공해도 데이터 품질에 문제가 있거나 검사 근거가 빠질 수 있습니다. 실행 상태와 데이터의 사용 가능 여부를 별도로 관리하도록 구조를 나눴습니다.",
+      "actions": [
+        "파이프라인 실행 명세와 개발 요구사항 문서를 구분했습니다.",
+        "명세, 실행, 품질 판정과 증거 이력의 역할을 나눠 아키텍처를 설계했습니다."
+      ],
+      "results": [
+        "제품 등록, 가상 데이터 모의 실행, 검사 결과와 이력 조회 기능을 로컬 MVP로 만들었습니다.",
+        "실행 결과와 품질 판정을 별도로 저장하도록 구성했습니다."
+      ],
+      "limit": "로컬 MVP 개발 단계입니다. 운영 DB와 스케줄러에는 아직 연결하지 않았습니다.",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "Pydantic",
+        "파이프라인 명세"
+      ]
+    },
+    {
+      "slug": "model-serving-boundaries",
+      "title": "모델별 전처리·추론 서비스 확장",
+      "category": "design",
+      "project": "manufacturing-ai-backend",
+      "period": "2021–2023, 단계별 참여",
+      "status": "백엔드 구축·확장 참여",
+      "summary": "외부 데이터를 연결하고 모델별 전처리·추론 컨테이너를 확장하는 작업에 참여했습니다.",
+      "context": "분석 모델을 추가하려면 데이터 수집, 전처리와 추론 결과 제공도 함께 이어져야 했습니다. 외부 원천 데이터 연계와 모델 서비스 확장 작업을 맡았습니다.",
+      "actions": [
+        "SOAP 웹 서비스에서 데이터를 수집해 백엔드에 연결했습니다.",
+        "모델 운영정보와 모델별 전처리·추론 컨테이너를 추가하는 구조를 사용했습니다.",
+        "Kafka 전달, Redis 추론용 데이터와 S3 이력 저장을 사용하는 백엔드에서 작업했습니다."
+      ],
+      "results": [
+        "AI 운영시스템 구축과 서비스 확산·확장 단계에 참여했습니다.",
+        "모델별 처리 서비스와 공통 데이터 연계를 구분해 백엔드를 확장했습니다."
+      ],
+      "limit": "팀 프로젝트에서 외부 데이터 연계와 백엔드 개발을 담당했습니다.",
+      "technologies": [
+        "Docker",
+        "SOAP",
+        "Kafka",
+        "Redis",
+        "S3"
+      ]
+    },
+    {
+      "slug": "infrastructure-transition-review",
+      "title": "S3에서 공유 스토리지로 적재 경로 검토",
+      "category": "design",
+      "project": "infrastructure-transition",
+      "period": "2025.01–2025.07",
+      "status": "프로젝트 참여 / 전환 검토 기록",
+      "summary": "Private IDC 전환에 필요한 파일 경로, Airflow 메타데이터와 로그 저장 위치를 비교했습니다.",
+      "context": "클라우드의 데이터 수집·적재 흐름을 Private IDC로 옮기면 파일 저장소와 실행 환경이 함께 바뀝니다. 기존 환경과 목표 환경을 비교하며 변경할 항목을 정리했습니다.",
+      "actions": [
+        "Airflow를 통해 CSV를 수집해 S3에 적재하는 기존 경로와 공유 스토리지를 사용하는 목표 경로를 비교했습니다.",
+        "Airflow 메타데이터·로그 저장 위치와 기존 ETL 작업의 분할을 검토 항목으로 정리했습니다.",
+        "파일 형식 전환 프로그램과 카탈로그 연계 등 이전 시 영향을 받는 부분을 검토했습니다."
+      ],
+      "results": [
+        "파일 저장 경로, 메타데이터·로그 위치와 ETL 분할 등 후속 설계에서 확인할 항목을 정리했습니다."
+      ],
+      "limit": "인프라 전환 방안을 검토한 내용입니다. 후속 구현과 운영 결과는 이 글에서 다루지 않습니다.",
+      "technologies": [
+        "Airflow",
+        "CSV",
+        "S3",
+        "공유 스토리지"
+      ]
+    },
+    {
+      "slug": "kafka-consumer-polling",
+      "title": "수집 지연과 Kafka Consumer Poll 점검",
+      "category": "operations",
+      "project": "manufacturing-ai-backend",
+      "period": "AI 운영시스템 참여 기간",
+      "status": "문제 대응 기록",
+      "summary": "추론용 데이터가 늦게 도착하는 문제를 추적하며 Kafka Consumer의 Poll 동작을 점검했습니다.",
+      "context": "추론에 사용할 데이터가 늦게 도착하는 문제가 있었습니다. 원천 수집, 메시지 전달과 소비 구간을 나눠 지연이 생기는 지점을 확인했습니다.",
+      "actions": [
+        "CloudWatch의 자원 모니터링과 서버별 상세 로그를 확인했습니다.",
+        "Kafka Consumer가 한 번에 과도한 메시지를 Poll하는 문제를 점검했습니다."
+      ],
+      "results": [
+        "수집 지연을 조사하는 과정에서 Consumer Poll size 초과와 과다 Poll 문제를 확인했습니다."
+      ],
+      "limit": "당시 확인한 Poll 문제를 정리했습니다. 설정 조정값과 개선 수치는 기재하지 않았습니다.",
+      "technologies": [
+        "Kafka",
+        "SOAP",
+        "CloudWatch",
+        "Redis"
+      ]
+    },
+    {
+      "slug": "nifi-hive-connection",
+      "title": "NiFi·Hive 연결 오류와 CSV 전처리",
+      "category": "operations",
+      "project": null,
+      "projectName": "공공 재정 데이터 분석 플랫폼",
+      "period": "2023.01–2023.02",
+      "status": "조치 기록 / 일부 재처리 필요",
+      "summary": "CSV 형식 변경에 대응하고, 반복되는 Hive 연결 오류를 점검했습니다.",
+      "context": "CSV를 HDFS·Hive로 전달하고 분석 서버로 내보내는 과정에서 파일 형식 변경과 Hive 연결 오류가 발생했습니다. 파일 전처리와 연결 설정을 나눠 확인했습니다.",
+      "actions": [
+        "구분자 변환과 헤더 대문자 변환 등 CSV 전처리를 추가했습니다.",
+        "단순 쿼리로 확인하고 연결 대기·연결 수 설정을 조정했지만 broken pipe가 반복되는 것을 기록했습니다.",
+        "Hive 설정 파일을 추가한 뒤 다량의 FlowFile로 시험하고, 전체 배치의 로그를 별도로 확인했습니다.",
+        "테이블별 연결 서비스를 상위 범위의 공유 서비스로 묶는 방식과 실패 건의 재처리를 다뤘습니다."
+      ],
+      "results": [
+        "구분자와 헤더 형식 변경은 전처리를 추가해 대응했습니다.",
+        "연결 시험 뒤에도 전체 배치에서 일부 Hive → CSV 작업이 실패해 재처리가 필요했습니다."
+      ],
+      "limit": "CSV 전처리는 반영했고, 연결 오류는 일부 배치에 남아 있던 시점의 기록입니다.",
+      "technologies": [
+        "NiFi",
+        "Hive",
+        "HDFS",
+        "CSV"
+      ]
+    },
+    {
+      "slug": "quality-evidence-validation",
+      "title": "품질 실패와 검사 증거 누락 테스트",
+      "category": "verification",
+      "project": "data-production-platform",
+      "period": "2026.11, 로컬 MVP",
+      "status": "가상 데이터 검증 기록",
+      "summary": "가상 주문 데이터로 정상, 품질 실패와 증거 누락 시나리오를 검증했습니다.",
+      "context": "품질 검사에 통과했다는 값만 있고 근거가 없거나 다른 출력의 검사 결과를 참조하면 데이터를 사용 가능으로 처리할 수 없습니다. 이런 경우를 가상 주문 데이터로 테스트했습니다.",
+      "actions": [
+        "정상 실행, 품질 실패와 검사 증거 누락 시나리오를 만들었습니다.",
+        "제품, 실행, 출력과 검사 증거를 연결하고, 필수 검사 실패나 증거 부족 시 사용을 보류하도록 했습니다.",
+        "동일 요청 재시도, 입력 충돌, 저장 중 실패와 재시작 후 조회를 검증 대상으로 잡았습니다."
+      ],
+      "results": [
+        "정상·품질 실패·증거 누락을 서로 다른 상태로 처리하도록 로컬 기능을 검증했습니다.",
+        "제품과 출력에 맞는 검사 결과와 증거가 있을 때만 사용 가능 여부를 판정하도록 구성했습니다."
+      ],
+      "limit": "가상 데이터 기반 로컬 테스트입니다. 운영 DB와 스케줄러 연동은 아직 진행하지 않았습니다.",
+      "technologies": [
+        "FastAPI",
+        "Pydantic",
+        "SQLite",
+        "pytest"
+      ]
+    },
+    {
+      "slug": "lake-load-validation",
+      "title": "적재 방식 구분과 원천·조회 건수 대조",
+      "category": "verification",
+      "project": "data-lake-upgrade",
+      "period": "2024.03–2024.10",
+      "status": "데이터 레이크 고도화 참여",
+      "summary": "전체 덮어쓰기, 파티션 덮어쓰기와 병합 갱신을 구분하고 적재 뒤 건수를 확인했습니다.",
+      "context": "테이블마다 데이터가 바뀌는 방식이 달랐습니다. 적재 방식에 맞게 처리하고, 작업 종료 뒤 원천과 조회 결과의 건수를 별도로 확인했습니다.",
+      "actions": [
+        "Airflow 수집과 S3 원본 보관, Glue·PySpark 정제, Parquet·Athena 조회 흐름에 참여했습니다.",
+        "전체 덮어쓰기, 파티션 덮어쓰기와 병합 갱신을 데이터 특성에 따라 구분했습니다.",
+        "원천 데이터와 조회 뷰의 건수를 비교하는 품질 확인과 모니터링 관련 작업을 기록했습니다."
+      ],
+      "results": [
+        "Airflow 작업 상태와 데이터 건수 대조 결과를 별도로 확인했습니다."
+      ],
+      "limit": "건수 대조는 검증 항목 중 하나입니다. 값 전체의 일치 여부와는 별도로 확인했습니다.",
+      "technologies": [
+        "Airflow",
+        "S3",
+        "Glue",
+        "PySpark",
+        "Athena"
+      ]
+    }
+  ]
+}
