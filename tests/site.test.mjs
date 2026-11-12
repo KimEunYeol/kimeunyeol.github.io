@@ -30,19 +30,35 @@ test('public pages and internal anchors resolve without duplicate IDs',async()=>
   }
 });
 
-test('public profile contains professional fields and only the approved generic personal project',()=>{
+test('public profile contains professional fields and only the approved personal projects',()=>{
   assert.deepEqual(Object.keys(profile).sort(),['name','role','description','employment','projects','personalProjects','career','education','certificates'].sort());
   assert.ok(profile.projects.every(p=>['work','ongoing'].includes(p.kind)&&p.links.length===0));
-  assert.equal(profile.personalProjects.length,1);
+  assert.deepEqual(profile.personalProjects.map(p=>({slug:p.slug,name:p.name})),[
+    {slug:'music-club',name:'음악동아리'},
+    {slug:'reptilelink',name:'랩타일링크'}
+  ]);
   const personal=profile.personalProjects[0];
   assert.equal(personal.name,'음악동아리');
   assert.equal(personal.slug,'music-club');
   assert.equal(personal.kind,'personal');
   assert.deepEqual(personal.links,[]);
   assert.equal('visual' in personal,false);
+  const reptile=profile.personalProjects.find(p=>p.slug==='reptilelink');
+  assert.equal(reptile.kind,'personal');
+  assert.deepEqual(reptile.links,[{label:'서비스 보기',url:'https://reptilelink.netlify.app/'}]);
   assert.equal(profile.education,'컴퓨터공학 학사');
   assert.ok(profile.certificates.every(c=>!/[0-9]/.test(c)));
   assert.equal(privateLinks.test(JSON.stringify({profile,work})),false);
+});
+
+test('personal project pages use their own content across the site',()=>{
+  const reptile=documents.get('/projects/reptilelink/');
+  assert.match(reptile,/랩타일링크 제작 내용/);
+  assert.doesNotMatch(reptile,/caption[^>]*>음악동아리 제작 내용/);
+  for(const route of ['/','/projects/','/about/','/resume.html']){
+    assert.match(documents.get(route),/href="\/projects\/reptilelink\/"/);
+  }
+  assert.match(reptile,/href="https:\/\/reptilelink\.netlify\.app\/"/);
 });
 
 test('search and sitemap include only active public documents',async()=>{
