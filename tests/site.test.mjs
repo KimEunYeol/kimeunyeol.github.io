@@ -4,6 +4,7 @@ import {readFile,stat,readdir,mkdir,writeFile,unlink,rmdir} from 'node:fs/promis
 import path from 'node:path';
 import {root,profile,publishedProjects,work,escape,withdrawnRoutes,pruneGeneratedPages} from '../scripts/build.mjs';
 import {documents as searchDocuments} from '../assets/js/search-data.js';
+import {newestFirst} from '../scripts/chronology.mjs';
 
 const activeRoutes=['/','/resume.html','/about/','/experience/','/projects/','/work/',...publishedProjects.map(p=>`/projects/${p.slug}/`),...work.entries.map(w=>`/work/${w.slug}/`)];
 const routes=[...activeRoutes,...withdrawnRoutes,'/404.html'];
@@ -111,4 +112,66 @@ test('source relationships and HTML escaping remain valid',()=>{
     if(entry.project)assert.ok(profile.projects.some(p=>p.slug===entry.project));
   }
   assert.equal(escape('<img src=x onerror="alert(1)">'),'&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
+});
+
+test('history is newest first across generated home, lists and resume',()=>{
+  const expectedProjects=['data-production-platform','transport-optimization','data-lake-environment-support','music-club','reptilelink','infrastructure-transition','data-lake-upgrade','manufacturing-ai-backend'];
+  const projectRows=[...documents.get('/projects/').matchAll(/data-project-row="([^"]+)"/g)].map(m=>m[1]);
+  assert.deepEqual(projectRows,expectedProjects);
+  const expectedNotes=['production-contract-boundaries','quality-evidence-validation','transport-simulation-validation','gitlab-pipeline-recovery','infrastructure-transition-review','lake-load-validation','nifi-hive-connection','model-serving-boundaries','kafka-consumer-polling'];
+  const noteLinks=[...documents.get('/work/').matchAll(/<article><a href="\/work\/([^/]+)\/">/g)].map(m=>m[1]);
+  assert.deepEqual(noteLinks,expectedNotes);
+  for(const route of ['/experience/','/resume.html']){
+    const html=documents.get(route);
+    const rows=[...html.matchAll(/<tr><td data-label="프로젝트">([^<]+)<\/td><td data-label="참여 기간">([^<]+)<\/td>/g)].map(m=>m[1]);
+    assert.deepEqual(rows,profile.career.map(c=>c.name),route);
+    assert.equal(rows.length,10);
+    assert.equal(rows[0],'제조 물류 운송 최적화 시뮬레이션');
+    assert.equal(rows[1],'데이터레이크 개발환경 검토·기술 지원');
+    assert.ok(html.indexOf('현재 진행 중인 작업')<html.indexOf('<table'),route);
+    assert.match(html,/경력증명서 기재 기간: 2020\.06–2025\.08/);
+  }
+  const homeRows=[...documents.get('/').matchAll(/data-project-row="([^"]+)"/g)].map(m=>m[1]);
+  assert.deepEqual(homeRows,expectedProjects);
+});
+
+test('partial dates retain their precision and equal dates keep their order',()=>{
+  const original=[{slug:'year-a',sortDate:'2026'},{slug:'old',sortDate:'2025-12'},{slug:'year-b',sortDate:'2026'},{slug:'new',sortDate:'2026-07'}];
+  assert.deepEqual(newestFirst(original).map(x=>x.slug),['new','year-a','year-b','old']);
+  assert.deepEqual(original.map(x=>x.slug),['year-a','old','year-b','new']);
+  assert.ok(profile.personalProjects.every(p=>p.sortDate==='2026'&&p.period==='2026'));
+  assert.throws(()=>newestFirst([{slug:'undated'}]),/chronology date/);
+});
+
+test('mail based additions describe performed work without extending certified employment',()=>{
+  assert.equal(profile.employment.period,'2020.06–2025.08');
+  assert.equal(profile.career.filter(c=>c.basis==='mail').length,2);
+  const transport=documents.get('/projects/transport-optimization/');
+  const support=documents.get('/projects/data-lake-environment-support/');
+  assert.match(transport,/2026\.07/);
+  assert.match(transport,/OR-Tools/);
+  assert.match(transport,/AS-IS/);
+  assert.match(support,/2025\.12–2026\.01/);
+  assert.match(support,/구축안/);
+  assert.match(support,/Runner/);
+  assert.doesNotMatch(transport+support,/VND|\d+%|\b\d{2}[A-Z]-\d{4,5}\b/);
+  assert.match(documents.get('/work/gitlab-pipeline-recovery/'),/2026\.01\.15/);
+});
+
+test('published pages use production metadata and current work takeaways',()=>{
+  for(const route of activeRoutes){
+    const html=documents.get(route);
+    assert.ok(html.includes(`<link rel="canonical" href="https://kimeunyeol.github.io${route}">`),route);
+    assert.ok(html.includes(`<meta property="og:url" content="https://kimeunyeol.github.io${route}">`),route);
+    assert.doesNotMatch(html,/content="noindex/);
+    assert.doesNotMatch(html,/127\.0\.0\.1|localhost|디자인 테스트/);
+  }
+  for(const entry of work.entries){
+    const html=documents.get(`/work/${entry.slug}/`);
+    assert.ok(entry.takeaway?.trim());
+    assert.ok(html.includes(escape(entry.takeaway)));
+    assert.equal([...html.matchAll(/<h2[^>]*>한 줄 요약<\/h2>/g)].length,1);
+    assert.doesNotMatch(html,/덧붙이면|<p>undefined<\/p>/);
+    assert.ok(searchDocuments.find(item=>item.url===`/work/${entry.slug}/`).text.includes(entry.takeaway));
+  }
 });

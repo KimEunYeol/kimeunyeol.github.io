@@ -1,4 +1,4 @@
-import { documents } from './search-data.js';
+import { documents } from './search-data.js?v=white-20261113';
 
 document.documentElement.classList.add('js');
 const menuButton = document.querySelector('.menu-toggle');
