@@ -20,7 +20,7 @@ Node.js 22 이상을 사용한다. 런타임 외의 패키지 설치는 필요�
 
 ```powershell
 node scripts/build.mjs
-node --test tests/site.test.mjs
+node --test tests/site.test.mjs tests/share.test.mjs
 node scripts/preview.mjs
 ```
 
@@ -32,8 +32,10 @@ node scripts/preview.mjs
 - `content/work.json`: 공개 가능한 수행 내용과 결과.
 - `scripts/build.mjs`: 페이지와 검색 색인 생성. 제외된 프로젝트·업무의 이전 생성 페이지도 정리한다.
 - `scripts/chronology.mjs`: 최신순 정렬. 연도만 확인된 항목에는 월을 추가하지 않는다.
+- `scripts/portfolio-sharing.mjs`: 공유 창과 `/portfolio/`의 한 페이지 요약 생성.
 - `assets/css/site.css`: 프로젝트 탐색형 디자인, 모바일·인쇄 스타일.
 - `assets/js/site.js`: 프로젝트 선택·분류·검색, 전체 검색, 모바일 메뉴와 인쇄.
+- `assets/js/share.js`: 공유 링크 복사, 기기 공유와 실패·취소 안내.
 
 내용 변경 후 빌드를 실행하고 생성된 HTML·검색 색인도 함께 갱신한다. 개인 연락처·고유 명칭이 담긴 이미지와 사용하지 않는 이전 테마 원본은 포함하지 않는다. 제외된 과거 학습 글의 일반 URL에는 본문 대신 검색 제외 안내만 제공한다.
 
@@ -42,6 +44,8 @@ node scripts/preview.mjs
 ## 검증과 공개
 
 검사는 내부 링크, 목차, 검색 색인, 개인정보 관련 공개 필드와 오래된 생성 페이지의 잔존을 확인한다. 공개 범위는 `docs/public-content-policy.md`를 따른다. 이력서는 브라우저에서 인쇄하거나 PDF로 저장한다.
+
+하단의 '포트폴리오 공유'를 누르면 공개용 요약 주소 `https://kimeunyeol.github.io/portfolio/`와 복사·공유 선택지가 열린다. 요약에는 소개, 주요 기술, 업무 프로젝트 6개, 개인 제작 2개와 전공·자격을 표시한다. 기기 공유가 지원되면 '다른 앱으로 공유'를 표시하며 실제 공유 앱은 사용자의 기기와 브라우저에 따라 달라진다. 텔레그램 공유는 받는 사람 선택 화면으로 연결하고, 카카오톡·문자 등에는 복사한 링크를 붙여넣을 수 있다. JavaScript를 사용할 수 없을 때는 하단 링크로 요약 페이지를 바로 연다.
 
 `.nojekyll`과 생성된 루트 HTML을 사용하는 정적 사이트다. 원격 저장소와 호스팅 설정은 로컬 빌드만으로 변경되지 않는다.
 

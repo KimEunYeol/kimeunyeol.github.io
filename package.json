@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test tests/site.test.mjs",
+    "test": "node --test tests/site.test.mjs tests/share.test.mjs",
     "preview": "node scripts/preview.mjs"
   },
   "engines": {

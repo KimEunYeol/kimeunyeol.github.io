@@ -1,6 +1,8 @@
-import { documents } from './search-data.js?v=white-intro-20261113';
+import { configurePortfolioSharing } from './share.js?v=white-share-20261113';
+import { documents } from './search-data.js?v=white-share-20261113';
 
 document.documentElement.classList.add('js');
+configurePortfolioSharing();
 const menuButton = document.querySelector('.menu-toggle');
 const navigationDialog = document.querySelector('#navigation-dialog');
 const searchButton = document.querySelector('.search-open');

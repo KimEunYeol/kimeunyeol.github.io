@@ -26,3 +26,37 @@ dialog{color:var(--ink);background:var(--paper);border:1px solid var(--line);bor
   .content-table td+td{margin-top:9px}
   .content-table td:not(:first-child)::before{content:attr(data-label);color:var(--muted);font-size:13px;font-weight:400}
 }
+
+.portfolio-share-dialog{width:620px;overflow-y:auto}
+.share-description{font-size:15px;color:var(--muted);margin-bottom:20px}
+.share-label{display:block;font-size:14px;font-weight:600;margin-bottom:7px}
+.share-url{width:100%;min-width:0;border:1px solid var(--line);border-radius:5px;background:var(--soft);padding:11px 12px;font-size:15px}
+.share-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.share-actions button,.share-messenger{border:1px solid var(--line);border-radius:5px;background:var(--paper);padding:8px 12px;font-size:14px;line-height:1.7;text-align:center}
+.share-actions .share-copy{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.share-status{font-size:14px;color:var(--accent);margin-top:12px;min-height:1.8em}
+.share-help{font-size:13px;color:var(--muted);margin:0 0 16px}
+.share-preview{font-size:14px;text-decoration:underline}
+.summary-page .left-sidebar,.summary-page .menu-toggle,.summary-page .mobile-navigation,.summary-page .search-open.js-only{display:none!important}
+.summary-page .site-layout{display:block;max-width:900px;min-height:0}
+.summary-page .header-inner,.summary-page .site-footer{max-width:900px}
+.portfolio-summary{max-width:none;padding:42px 32px 56px}
+.portfolio-summary .page-heading{padding-bottom:25px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.portfolio-summary .eyebrow{margin-bottom:9px}
+.portfolio-summary .page-heading h1{margin-bottom:8px}
+.summary-actions{display:flex;flex-wrap:wrap;gap:22px;margin-top:18px;font-size:14px}
+.summary-actions a,.summary-project h3 a,.summary-personal h3 a,.summary-full a{text-decoration:underline}
+.summary-introduction p{font-size:15px;line-height:1.9}
+.summary-introduction p+p{color:var(--muted)}
+.summary-project{padding:18px 0;border-bottom:1px solid var(--line)}
+.summary-project-heading{display:flex;align-items:baseline;justify-content:space-between;gap:18px}
+.summary-project h3,.summary-personal h3{font-size:17px}
+.summary-project-heading>span{flex-shrink:0;font-size:13px;color:var(--muted)}
+.summary-project>p,.summary-personal>p{font-size:15px;line-height:1.85;margin-top:9px}
+.summary-project .summary-project-meta,.summary-scope{font-size:13px!important;color:var(--muted)}
+.summary-personal{border-top:1px solid var(--line);padding:18px 0}
+.summary-personal .detail-link{margin-top:10px;font-size:14px}
+.summary-qualifications p{font-size:14px}
+.summary-full{font-size:14px;margin-top:25px}
+@media(max-width:520px){.portfolio-share-dialog{padding:20px}.share-actions{display:grid;grid-template-columns:1fr;width:100%}.share-url{font-size:14px}.portfolio-summary{padding:30px 18px 40px}.summary-project-heading{display:block}.summary-project-heading>span{display:block;margin-top:5px}.summary-project h3,.summary-personal h3{font-size:16px}}
+@media print{.summary-actions{display:none!important}.portfolio-summary{padding:0}.summary-project,.summary-personal{break-inside:avoid}.summary-project{padding:9px 0}}

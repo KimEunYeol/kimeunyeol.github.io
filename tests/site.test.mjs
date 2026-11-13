@@ -6,7 +6,7 @@ import {root,profile,publishedProjects,work,escape,withdrawnRoutes,pruneGenerate
 import {documents as searchDocuments} from '../assets/js/search-data.js';
 import {newestFirst} from '../scripts/chronology.mjs';
 
-const activeRoutes=['/','/resume.html','/about/','/experience/','/projects/','/work/',...publishedProjects.map(p=>`/projects/${p.slug}/`),...work.entries.map(w=>`/work/${w.slug}/`)];
+const activeRoutes=['/portfolio/','/','/resume.html','/about/','/experience/','/projects/','/work/',...publishedProjects.map(p=>`/projects/${p.slug}/`),...work.entries.map(w=>`/work/${w.slug}/`)];
 const routes=[...activeRoutes,...withdrawnRoutes,'/404.html'];
 const target=route=>path.join(root,route.endsWith('/')?route+'index.html':route);
 const documents=new Map(await Promise.all(routes.map(async route=>[route,await readFile(target(route),'utf8')])));
@@ -154,7 +154,8 @@ test('mail based additions describe performed work without extending certified e
   assert.match(support,/2025\.12–2026\.01/);
   assert.match(support,/구축안/);
   assert.match(support,/Runner/);
-  assert.doesNotMatch(transport+support,/VND|\d+%|\b\d{2}[A-Z]-\d{4,5}\b/);
+  const articleText=[transport,support].map(html=>html.match(/<main[^>]*>([\s\S]*?)<\/main>/)[1].replace(/<[^>]*>/g,' ')).join(' ');
+  assert.doesNotMatch(articleText,/VND|\d+%|\b\d{2}[A-Z]-\d{4,5}\b/);
   assert.match(documents.get('/work/gitlab-pipeline-recovery/'),/2026\.01\.15/);
 });
 
@@ -174,4 +175,30 @@ test('published pages use production metadata and current work takeaways',()=>{
     assert.doesNotMatch(html,/덧붙이면|<p>undefined<\/p>/);
     assert.ok(searchDocuments.find(item=>item.url===`/work/${entry.slug}/`).text.includes(entry.takeaway));
   }
+});
+
+test('footer sharing always targets the public one-page portfolio',()=>{
+  const target='https://kimeunyeol.github.io/portfolio/';
+  for(const [route,html]of documents){
+    const footer=html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)[1];
+    assert.match(footer,/href="\/portfolio\/" data-portfolio-share/);
+    assert.doesNotMatch(footer,/href="\/resume\.html"/);
+    assert.ok(html.includes(`readonly value="${target}"`),route);
+    const telegram=html.match(/href="(https:\/\/t\.me\/share\/url[^\"]+)"/)[1].replaceAll('&amp;','&');
+    assert.equal(new URL(telegram).searchParams.get('url'),target);
+    assert.match(html,/id="portfolio-share-dialog"/);
+  }
+});
+
+test('one-page portfolio preserves approved project facts and detail links',()=>{
+  const html=documents.get('/portfolio/');
+  const main=html.match(/<main[^>]*>([\s\S]*?)<\/main>/)[1];
+  assert.match(html,/<body class="summary-page">/);
+  for(const project of publishedProjects){
+    assert.ok(main.includes(escape(project.name)));
+    assert.ok(main.includes(`/projects/${project.slug}/`));
+  }
+  assert.ok(main.includes(escape(profile.projects.find(p=>p.kind==='ongoing').scope)));
+  assert.ok(main.includes(escape(profile.personalProjects.find(p=>p.slug==='music-club').scope)));
+  assert.match(main,/href="\/resume\.html"/);
 });
