@@ -28,7 +28,7 @@ node scripts/preview.mjs
 
 ## 편집과 생성
 
-- `content/profile.json`: 공개용 경력·프로젝트·직무 데이터.
+- `content/profile.json`: 공개용 경력·프로젝트·직무 데이터와 소개·이력서에서 함께 쓰는 자기소개 문단.
 - `content/work.json`: 공개 가능한 수행 내용과 결과.
 - `scripts/build.mjs`: 페이지와 검색 색인 생성. 제외된 프로젝트·업무의 이전 생성 페이지도 정리한다.
 - `scripts/chronology.mjs`: 최신순 정렬. 연도만 확인된 항목에는 월을 추가하지 않는다.

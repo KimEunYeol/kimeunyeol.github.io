@@ -32,7 +32,7 @@ test('public pages and internal anchors resolve without duplicate IDs',async()=>
 });
 
 test('public profile contains professional fields and only the approved personal projects',()=>{
-  assert.deepEqual(Object.keys(profile).sort(),['name','role','description','employment','projects','personalProjects','career','education','certificates'].sort());
+  assert.deepEqual(Object.keys(profile).sort(),['name','role','description','introduction','employment','projects','personalProjects','career','education','certificates'].sort());
   assert.ok(profile.projects.every(p=>['work','ongoing'].includes(p.kind)&&p.links.length===0));
   assert.deepEqual(profile.personalProjects.map(p=>({slug:p.slug,name:p.name})),[
     {slug:'music-club',name:'음악동아리'},
