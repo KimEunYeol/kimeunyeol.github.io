@@ -275,7 +275,16 @@
         }
       ],
       "scope": "공개 웹과 관리 화면을 제작했습니다. 관리 로그인·저장·업로드는 권한과 저장 정책 검증이 끝날 때까지 비활성화한 상태입니다.",
-      "links": [],
+      "links": [
+        {
+          "label": "서비스 보기",
+          "url": "https://gain-music-club.vercel.app"
+        },
+        {
+          "label": "코드 보기",
+          "url": "https://github.com/KimEunYeol/gain"
+        }
+      ],
       "features": [
         {
           "label": "공개 웹",

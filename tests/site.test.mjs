@@ -11,6 +11,8 @@ const routes=[...activeRoutes,'/404.html'];
 const target=route=>path.join(root,route.endsWith('/')?route+'index.html':route);
 const documents=new Map(await Promise.all(routes.map(async route=>[route,await readFile(target(route),'utf8')])));
 const privateLinks=/(?:mailto:|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|https?:\/\/(?:www\.)?(?:github\.com|instagram\.com|facebook\.com|linkedin\.com)\/|notion\.(?:com|so)|[A-Z]:\\)/i;
+const approvedCodeLinks=[/https:\/\/github\.com\/KimEunYeol\/gain/];
+const publicText=value=>approvedCodeLinks.reduce((text,pattern)=>text.replace(pattern,''),value);
 
 test('public pages and internal anchors resolve without duplicate IDs',async()=>{
   for(const [route,html]of documents){
@@ -27,7 +29,7 @@ test('public pages and internal anchors resolve without duplicate IDs',async()=>
     assert.match(html,/<html lang="ko">/);
     assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length,1,route);
     assert.match(html,/<meta name="description" content="[^"]+">/);
-    assert.equal(privateLinks.test(html),false,`${route}: private contact or source link`);
+    assert.equal(privateLinks.test(publicText(html)),false,`${route}: private contact or source link`);
   }
 });
 
@@ -42,14 +44,17 @@ test('public profile contains professional fields and only the approved personal
   assert.equal(personal.name,'음악동아리');
   assert.equal(personal.slug,'music-club');
   assert.equal(personal.kind,'personal');
-  assert.deepEqual(personal.links,[]);
+  assert.deepEqual(personal.links,[
+    {label:'서비스 보기',url:'https://gain-music-club.vercel.app'},
+    {label:'코드 보기',url:'https://github.com/KimEunYeol/gain'}
+  ]);
   assert.equal('visual' in personal,false);
   const reptile=profile.personalProjects.find(p=>p.slug==='reptilelink');
   assert.equal(reptile.kind,'personal');
   assert.deepEqual(reptile.links,[{label:'서비스 보기',url:'https://reptilelink.netlify.app/'}]);
   assert.equal(profile.education,'컴퓨터공학 학사');
   assert.ok(profile.certificates.every(c=>!/[0-9]/.test(c)));
-  assert.equal(privateLinks.test(JSON.stringify({profile,work})),false);
+  assert.equal(privateLinks.test(publicText(JSON.stringify({profile,work}))),false);
 });
 
 test('personal project pages use their own content across the site',()=>{
@@ -60,6 +65,11 @@ test('personal project pages use their own content across the site',()=>{
     assert.match(documents.get(route),/href="\/projects\/reptilelink\/"/);
   }
   assert.match(reptile,/href="https:\/\/reptilelink\.netlify\.app\/"/);
+  const music=documents.get('/projects/music-club/');
+  assert.match(music,/href="https:\/\/gain-music-club\.vercel\.app"/);
+  assert.match(music,/href="https:\/\/github\.com\/KimEunYeol\/gain"/);
+  assert.match(music,/서비스 보기/);
+  assert.match(music,/코드 보기/);
 });
 
 test('search and sitemap include only active public documents',async()=>{
@@ -69,7 +79,7 @@ test('search and sitemap include only active public documents',async()=>{
   for(const entry of searchDocuments){
     assert.ok((await stat(target(entry.url))).isFile());
     assert.ok(entry.title.trim()&&entry.summary.trim());
-    assert.equal(privateLinks.test(JSON.stringify(entry)),false);
+    assert.equal(privateLinks.test(publicText(JSON.stringify(entry))),false);
   }
   const sitemap=await readFile(path.join(root,'sitemap.xml'),'utf8');
   assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>new URL(m[1]).pathname).sort(),[...activeRoutes].sort());
@@ -184,6 +194,24 @@ test('published pages use production metadata and current work takeaways',()=>{
     assert.equal([...html.matchAll(/<h2[^>]*>한 줄 요약<\/h2>/g)].length,1);
     assert.doesNotMatch(html,/덧붙이면|<p>undefined<\/p>/);
     assert.ok(searchDocuments.find(item=>item.url===`/work/${entry.slug}/`).text.includes(entry.takeaway));
+  }
+});
+
+test('every page advertises the 1200x630 share image',async()=>{
+  const png=await readFile(path.join(root,'assets','og-image.png'));
+  assert.equal(png.subarray(1,4).toString('latin1'),'PNG');
+  assert.equal(png.readUInt32BE(16),1200);
+  assert.equal(png.readUInt32BE(20),630);
+  const image='https://kimeunyeol.github.io/assets/og-image.png';
+  for(const route of routes){
+    const html=documents.get(route);
+    assert.ok(html.includes(`<meta property="og:image" content="${image}">`),route);
+    assert.ok(html.includes('<meta property="og:image:width" content="1200">'),route);
+    assert.ok(html.includes('<meta property="og:image:height" content="630">'),route);
+    assert.match(html,/<meta property="og:image:alt" content="[^"]+">/,route);
+    assert.ok(html.includes('<meta name="twitter:card" content="summary_large_image">'),route);
+    assert.ok(html.includes(`<meta name="twitter:image" content="${image}">`),route);
+    assert.doesNotMatch(html,/rel="preload"[^>]*og-image/,route);
   }
 });
 
