@@ -135,7 +135,7 @@ test('history is newest first across generated lists and resume',()=>{
     assert.equal(rows[0],'제조 물류 운송 최적화 시뮬레이션');
     assert.equal(rows[1],'데이터레이크 개발환경 검토·기술 지원');
     assert.ok(html.indexOf('현재 진행 중인 작업')<html.indexOf('<table'),route);
-    assert.match(html,/경력증명서 기재 기간: 2020\.06–2025\.08/);
+    assert.match(html,/재직 기간: 2020\.06–재직 중/);
   }
 });
 
@@ -163,8 +163,8 @@ test('partial dates retain their precision and equal dates keep their order',()=
   assert.throws(()=>newestFirst([{slug:'undated'}]),/chronology date/);
 });
 
-test('mail based additions describe performed work without extending certified employment',()=>{
-  assert.equal(profile.employment.period,'2020.06–2025.08');
+test('employment stays current while mail based additions describe performed work',()=>{
+  assert.equal(profile.employment.period,'2020.06–재직 중');
   assert.equal(profile.career.filter(c=>c.basis==='mail').length,2);
   const transport=documents.get('/projects/transport-optimization/');
   const support=documents.get('/projects/data-lake-environment-support/');
